@@ -3,12 +3,16 @@ title: LibSVM支持向量回归详解
 date: 2018-01-30 10:10:00
 categories: "SVM"
 tags:
-  -Machine learning
+  - Machine learning
+  - Artificial Intelligence
+  - Support Vector Machine
 mathjax: true
 ---
 LibSVM是是台湾林智仁(Chih-Jen Lin)教授2001年开发的一套支持向量机的库，可以很方便的对数据做分类或回归。由于LibSVM程序小，运用灵活，输入参数少，并且是开源的，易于扩展，因此成为目前国内应用最多的SVM的库，同时sklearn.svm也是使用的该库。
 
 网络上对于LibSVM源码的讲解有很多，但个人感觉绝大多数讲解的不够清晰，很多都是贴个理论公式图片再粘段代码就一带而过。并且网络上基本都是对SVC的讲解，SVR部分几乎没有提及（虽然SVR只是SVC的扩展）。因此本篇博文将系统地讲解LibSVM中SVR训练与预测部分的源码（想学习SVC的同学同样适用）。
+
+python复现LIBSVM中SVR部分功能可参见 https://github.com/KunBB/LibSVM_SVR_python
 <!--more-->
 
 ---
@@ -681,7 +685,7 @@ SVM收敛的充分必要条件(KKT条件)为：
 对式(4)、(5)、(6)、(7)进行约简得到式(8):
 ![Loading...](https://github.com/KunBB/MarkdownPhotos/blob/master/LibSVM%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E5%9B%9E%E5%BD%92%E8%AF%A6%E8%A7%A3/n_11.jpg?raw=true)
 
-可以发现，(4)和(5)都是b大于某个数，(6)和(7)都是b小于某个数。那么我可以发现，(4)和(5)都是b大于某个数，(6)和(7)都是b小于某个数。因为b是个常量，那么根据上述条件，我们可以得到以下结论，在合理的αi和αj下，有：
+可以发现，(4)和(5)都是b大于某个数，(6)和(7)都是b小于某个数。因为b是个常量，那么根据上述条件，我们可以得到以下结论，在合理的αi和αj下，有：
 ![Loading...](https://github.com/KunBB/MarkdownPhotos/blob/master/LibSVM%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E5%9B%9E%E5%BD%92%E8%AF%A6%E8%A7%A3/n_12.jpg?raw=true)
 
 我们就是要从中挑选违反上述条件的αi和αj，来进行重新的迭代和更新，使得所有的αi和αj都满足上述条件。那么我们可以很容易得到违反条件为：
@@ -1859,7 +1863,7 @@ double svm_predict_values(const svm_model *model, const svm_node *x, double* dec
 [2] Chang C C, Lin C J. LIBSVM: A library for support vector machines[M]. ACM, 2011.
 [3] Fan R E, Chen P H, Lin C J, et al. Working Set Selection Using Second Order Information for Training Support Vector Machines[J]. Journal of Machine Learning Research, 2005, 6(4):1889-1918.
 [4] Svm O F. Sequential Minimal Optimization for SVM[J]. 2007.
-[5] http://blog.csdn.net/le_zhou/article/details/40505465
-[6] http://blog.csdn.net/xiaoqiangqiangjie/article/details/53886907
-[7] http://makaidong.com/bentuwuying/21760_40631.html
+[5] LibSVM中select_working_set函数：http://blog.csdn.net/le_zhou/article/details/40505465
+[6] libsvm最新源代码（版本3.21）理解解析（三）：http://blog.csdn.net/xiaoqiangqiangjie/article/details/53886907
+[7] LibSVM源码剖析（java版）：http://makaidong.com/bentuwuying/21760_40631.html
 [8] LibSVM-2.6 程序代码注释,上交
